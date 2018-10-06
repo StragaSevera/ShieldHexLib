@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldHexLib", "ShieldHexLib\ShieldHexLib.csproj", "{6BD43BEC-BD2A-429B-8447-41E12C27E9F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldHexTests", "ShieldHexTests\ShieldHexTests.csproj", "{D42F5786-87C6-4E75-AA42-01F09B2DC807}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BD43BEC-BD2A-429B-8447-41E12C27E9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD43BEC-BD2A-429B-8447-41E12C27E9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD43BEC-BD2A-429B-8447-41E12C27E9F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD43BEC-BD2A-429B-8447-41E12C27E9F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42F5786-87C6-4E75-AA42-01F09B2DC807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42F5786-87C6-4E75-AA42-01F09B2DC807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42F5786-87C6-4E75-AA42-01F09B2DC807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42F5786-87C6-4E75-AA42-01F09B2DC807}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
