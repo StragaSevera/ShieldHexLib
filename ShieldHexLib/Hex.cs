@@ -1,51 +1,74 @@
 ﻿using System;
-using System.Numerics;
+using System.Collections.Generic;
+using ShieldHexLib.Vendor;
 
 namespace ShieldHexLib
 {
-    public class Hex
+    public class Hex : ValueObject
     {
-        private readonly Vector3 _coords;
+        public int Q { get; }
+        public int R { get; }
+        public int S { get; }
 
-        public bool IsFractional { get; }
-        public int Q => (int) Math.Round(_coords.X);
-        public int R => (int) Math.Round(_coords.Y);
-        public int S => (int) Math.Round(_coords.Z);
-        public float Qf => _coords.X;
-        public float Rf => _coords.Y;
-        public float Sf => _coords.Z;
+        public int this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0:
+                        return Q;
+                    case 1:
+                        return R;
+                    case 2:
+                        return S;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
+        }
 
+        public static int Length => 3;
 
         public Hex(int q, int r, int s)
         {
-            _coords = new Vector3(q, r, s);
-            IsFractional = false;
+            Q = q;
+            R = r;
+            S = s;
         }
 
-        public Hex(int q, int r)
+        public Hex(int q, int r) : this(q, r, -q - r) { }
+
+        public bool IsValid()
         {
-            _coords = new Vector3(q, r, -q - r);
-            IsFractional = false;
+            return Q + R + S == 0;
         }
 
-        public Hex(float q, float r, float s)
+        public static Hex operator +(Hex a, Hex b)
         {
-            _coords = new Vector3(q, r, s);
-            IsFractional = true;
+            return new Hex(a.Q + b.Q, a.R + b.R, a.S + b.S);
         }
 
-        public Hex(float q, float r)
+        public static Hex operator -(Hex a, Hex b)
         {
-            _coords = new Vector3(q, r, -q - r);
-            IsFractional = true;
+            return new Hex(a.Q - b.Q, a.R - b.R, a.S - b.S);
         }
 
-        public Hex(double q, double r, double s) : this((float) q, (float) r, (float) s)
+        public static Hex operator *(Hex a, int k)
         {
+            return new Hex(a.Q * k, a.R * k, a.S * k);
         }
 
-        public Hex(double q, double r) : this((float) q, (float) r)
+        public static Hex operator *(int k, Hex a)
         {
+            return new Hex(a.Q * k, a.R * k, a.S * k);
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Q;
+            yield return R;
+            yield return S;
         }
     }
 }
