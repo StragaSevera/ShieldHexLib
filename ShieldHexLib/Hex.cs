@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ShieldHexLib.Vendor;
 
 namespace ShieldHexLib
 {
-    public class Hex : ValueObject
+    public class Hex : ValueObject, IEnumerable<int>
     {
         public int Q { get; }
         public int R { get; }
@@ -28,8 +30,6 @@ namespace ShieldHexLib
             }
         }
 
-        public static int Length => 3;
-
         public Hex(int q, int r, int s)
         {
             Q = q;
@@ -38,6 +38,26 @@ namespace ShieldHexLib
         }
 
         public Hex(int q, int r) : this(q, r, -q - r) { }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            yield return Q;
+            yield return R;
+            yield return S;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            foreach (int x in this)
+            {
+                yield return x;
+            }
+        }
 
         public bool IsValid()
         {
@@ -64,11 +84,9 @@ namespace ShieldHexLib
             return new Hex(a.Q * k, a.R * k, a.S * k);
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        public int Length()
         {
-            yield return Q;
-            yield return R;
-            yield return S;
+            return this.Select(Math.Abs).Max();
         }
     }
 }

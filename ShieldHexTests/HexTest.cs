@@ -22,7 +22,6 @@ namespace ShieldHexLib.Test
             public void HasCoordsVector()
             {
                 var hex = new Hex(1, 2, -3);
-                Assert.That(Hex.Length, Is.EqualTo(3));
                 Assert.That(hex[0], Is.EqualTo(1));
                 Assert.That(hex[1], Is.EqualTo(2));
                 Assert.That(hex[2], Is.EqualTo(-3));
@@ -114,6 +113,19 @@ namespace ShieldHexLib.Test
                 var matchingResult = new Hex(2, 4, -6);
 
                 Assert.That(result, Is.EqualTo(matchingResult));
+            }
+        }
+
+        [TestFixture]
+        public class WithDistance
+        {
+            [TestCase(1, 2, -3, ExpectedResult = 3)]
+            [TestCase(0, 0, 0, ExpectedResult = 0)]
+            [TestCase(-2, 4, -2, ExpectedResult = 4)]
+            public int HasValidLength(int q, int r, int s)
+            {
+                var hex = new Hex(q, r, s);
+                return hex.Length();
             }
         }
     }
