@@ -63,7 +63,7 @@ namespace ShieldHexLib.Test
                 Assert.That(hex != anotherHex);
                 Assert.That(!hex.Equals(anotherHex));
             }
-            
+
             [Test]
             public void DoesNotEqualNullHex()
             {
@@ -151,7 +151,7 @@ namespace ShieldHexLib.Test
         }
 
         [TestFixture]
-        public class WithDistance
+        public class WithSpatialAwareness
         {
             [TestCase(1, 2, -3, ExpectedResult = 3)]
             [TestCase(0, 0, 0, ExpectedResult = 0)]
@@ -161,7 +161,7 @@ namespace ShieldHexLib.Test
                 var hex = new Hex(q, r, s);
                 return hex.Length();
             }
-            
+
             [TestCase(1, 2, -3, 0, 0, 0, ExpectedResult = 3)]
             [TestCase(2, 2, -4, 2, 2, -4, ExpectedResult = 0)]
             [TestCase(1, 2, -3, -4, 2, 2, ExpectedResult = 5)]
@@ -171,6 +171,26 @@ namespace ShieldHexLib.Test
                 var hex = new Hex(q1, r1, s1);
                 var anotherHex = new Hex(q2, r2, s2);
                 return hex.Distance(anotherHex);
+            }
+
+            [TestCase(0, ExpectedResult = new[] {1, 0, -1})]
+            [TestCase(1, ExpectedResult = new[] {1, -1, 0})]
+            [TestCase(5, ExpectedResult = new[] {0, 1, -1})]
+            [TestCase(6, ExpectedResult = new[] {1, 0, -1})]
+            public int[] HasValidDirection(int dir)
+            {
+                Hex direction = Hex.Direction(dir);
+                return direction.ToArray();
+            }
+            
+            [TestCase(0, 0, 0, 0, ExpectedResult = new[] {1, 0, -1})]
+            [TestCase(1, 2, -3, 0, ExpectedResult = new[] {2, 2, -4})]
+            [TestCase(-3, 3, -0, 4, ExpectedResult = new[] {-4, 4, 0})]
+            public int[] HasValidNeighbor(int q, int r, int s, int dir)
+            {
+                var hex = new Hex(q, r, s);
+                Hex neighbor = hex.Neighbor(dir);
+                return neighbor.ToArray();
             }
         }
     }

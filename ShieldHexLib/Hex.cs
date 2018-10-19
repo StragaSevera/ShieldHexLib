@@ -32,6 +32,12 @@ namespace ShieldHexLib
         // ReSharper disable once MemberCanBeMadeStatic.Global
         public int Dimensions => 3;
 
+        private static readonly Hex[] Directions =
+        {
+            new Hex(1, 0, -1), new Hex(1, -1, 0),
+            new Hex(0, -1, 1), new Hex(-1, 0, 1),
+            new Hex(-1, 1, 0), new Hex(0, 1, -1)
+        };
 
         public Hex(int q, int r, int s)
         {
@@ -122,6 +128,17 @@ namespace ShieldHexLib
         public int Distance(Hex hex)
         {
             return (this - hex).Length();
+        }
+
+        public static Hex Direction(int dir)
+        {
+            int index = (dir %= Directions.Length) < 0 ? dir + Directions.Length : dir;
+            return Directions[index];
+        }
+
+        public Hex Neighbor(int dir)
+        {
+            return this + Directions[dir];
         }
     }
 }
