@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ShieldHexLib.Vendor;
 
 namespace ShieldHexLib
 {
-    public class Hex : ValueObject, IEnumerable<int>
+    public struct Hex : IEnumerable<int>
     {
         public int Q { get; }
         public int R { get; }
@@ -30,8 +29,15 @@ namespace ShieldHexLib
             }
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        public int Dimensions => 3;
+
+
         public Hex(int q, int r, int s)
         {
+            if (!IsValid(q, r, s))
+                throw new ArgumentException("Invalid coords!");
+
             Q = q;
             R = r;
             S = s;
@@ -51,17 +57,41 @@ namespace ShieldHexLib
             return GetEnumerator();
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        public bool Equals(Hex other)
         {
-            foreach (int x in this)
+            return Q == other.Q && R == other.R && S == other.S;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Hex other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                yield return x;
+                int hashCode = Q;
+                hashCode = (hashCode * 397) ^ R;
+                hashCode = (hashCode * 397) ^ S;
+                return hashCode;
             }
         }
 
-        public bool IsValid()
+        public static bool operator ==(Hex a, Hex b)
         {
-            return Q + R + S == 0;
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Hex a, Hex b)
+        {
+            return !(a == b);
+        }
+
+        private static bool IsValid(int q, int r, int s)
+        {
+            return q + r + s == 0;
         }
 
         public static Hex operator +(Hex a, Hex b)
@@ -87,6 +117,11 @@ namespace ShieldHexLib
         public int Length()
         {
             return this.Select(Math.Abs).Max();
+        }
+
+        public int Distance(Hex hex)
+        {
+            return (this - hex).Length();
         }
     }
 }

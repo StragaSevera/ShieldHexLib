@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace ShieldHexLib.Test
@@ -38,17 +40,10 @@ namespace ShieldHexLib.Test
             }
 
             [Test]
-            public void IsValid()
+            public void CannotBeInvalid()
             {
-                var hex = new Hex(1, 2, -3);
-                Assert.That(hex.IsValid(), Is.True);
-            }
-
-            [Test]
-            public void IsInvalidWhenSumOfCoordsNotZero()
-            {
-                var hex = new Hex(1, 2, 0);
-                Assert.That(hex.IsValid(), Is.False);
+                Hex HexFunc() => new Hex(1, 2, 0);
+                Assert.That(HexFunc, Throws.ArgumentException);
             }
 
             [Test]
@@ -56,7 +51,8 @@ namespace ShieldHexLib.Test
             {
                 var hex = new Hex(1, 2, -3);
                 var anotherHex = new Hex(1, 2, -3);
-                Assert.That(hex, Is.EqualTo(anotherHex));
+                Assert.That(hex == anotherHex);
+                Assert.That(hex.Equals(anotherHex));
             }
 
             [Test]
@@ -64,7 +60,45 @@ namespace ShieldHexLib.Test
             {
                 var hex = new Hex(1, 2, -3);
                 var anotherHex = new Hex(1, 1, -2);
-                Assert.That(hex, Is.Not.EqualTo(anotherHex));
+                Assert.That(hex != anotherHex);
+                Assert.That(!hex.Equals(anotherHex));
+            }
+            
+            [Test]
+            public void DoesNotEqualNullHex()
+            {
+                var hex = new Hex(1, 2, -3);
+                Assert.That(hex != null);
+                Assert.That(!hex.Equals(null));
+            }
+
+            [Test]
+            public void CanBeHashed()
+            {
+                var dict = new Dictionary<Hex, int>
+                {
+                    [new Hex(1, 1, -2)] = 1
+                };
+                var hex = new Hex(1, 1, -2);
+                Assert.That(dict[hex] == 1);
+            }
+
+            [Test]
+            public void CanBeIterated()
+            {
+                var hex = new Hex(1, 2, -3);
+                var list = new List<int> {1, 2, -3};
+                Assert.That(hex.ToList().SequenceEqual(list));
+            }
+
+            [Test]
+            public void CanBeBracketsAccessed()
+            {
+                var hex = new Hex(1, 2, -3);
+                Assert.That(hex[0] == 1);
+                Assert.That(hex[1] == 2);
+                Assert.That(hex[2] == -3);
+                Assert.That(hex.Dimensions == 3);
             }
         }
 
@@ -126,6 +160,17 @@ namespace ShieldHexLib.Test
             {
                 var hex = new Hex(q, r, s);
                 return hex.Length();
+            }
+            
+            [TestCase(1, 2, -3, 0, 0, 0, ExpectedResult = 3)]
+            [TestCase(2, 2, -4, 2, 2, -4, ExpectedResult = 0)]
+            [TestCase(1, 2, -3, -4, 2, 2, ExpectedResult = 5)]
+            [TestCase(5, -1, -4, -2, 1, 1, ExpectedResult = 7)]
+            public int HasValidDistance(int q1, int r1, int s1, int q2, int r2, int s2)
+            {
+                var hex = new Hex(q1, r1, s1);
+                var anotherHex = new Hex(q2, r2, s2);
+                return hex.Distance(anotherHex);
             }
         }
     }
