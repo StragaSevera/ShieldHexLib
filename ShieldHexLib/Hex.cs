@@ -132,7 +132,11 @@ namespace ShieldHexLib
 
         public static Hex Direction(int dir)
         {
-            int index = (dir %= Directions.Length) < 0 ? dir + Directions.Length : dir;
+            int index = dir % Directions.Length;
+            if (index < 0)
+            {
+                index += Directions.Length;
+            }
             return Directions[index];
         }
 

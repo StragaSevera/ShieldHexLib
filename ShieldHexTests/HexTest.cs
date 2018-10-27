@@ -177,6 +177,7 @@ namespace ShieldHexLib.Test
             [TestCase(1, ExpectedResult = new[] {1, -1, 0})]
             [TestCase(5, ExpectedResult = new[] {0, 1, -1})]
             [TestCase(6, ExpectedResult = new[] {1, 0, -1})]
+            [TestCase(-1, ExpectedResult = new[] {0, 1, -1})]
             public int[] HasValidDirection(int dir)
             {
                 Hex direction = Hex.Direction(dir);
