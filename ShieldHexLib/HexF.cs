@@ -64,6 +64,7 @@ namespace ShieldHexLib
 
         private bool Equals(HexF other)
         {
+            // TODO: Add comparsion within tolerance
             return _coords.Equals(other._coords);
         }
 

@@ -78,7 +78,7 @@ namespace ShieldHexLib
         {
             unchecked
             {
-                int hashCode = Q;
+                var hashCode = Q;
                 hashCode = (hashCode * 397) ^ R;
                 hashCode = (hashCode * 397) ^ S;
                 return hashCode;
@@ -110,6 +110,7 @@ namespace ShieldHexLib
             return new Hex(a.Q - b.Q, a.R - b.R, a.S - b.S);
         }
 
+        // Multiplying by a scalar
         public static Hex operator *(Hex a, int k)
         {
             return new Hex(a.Q * k, a.R * k, a.S * k);
@@ -132,7 +133,7 @@ namespace ShieldHexLib
 
         public static Hex Direction(int dir)
         {
-            int index = dir % Directions.Length;
+            var index = dir % Directions.Length;
             if (index < 0)
             {
                 index += Directions.Length;
