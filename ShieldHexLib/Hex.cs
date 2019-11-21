@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace ShieldHexLib
 {
@@ -30,9 +31,9 @@ namespace ShieldHexLib
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
-        public int Dimensions => 3;
+        public int Length => 3;
 
-        private static readonly Hex[] Directions =
+        private static readonly Hex[] _directions =
         {
             new Hex(1, 0, -1), new Hex(1, -1, 0),
             new Hex(0, -1, 1), new Hex(-1, 0, 1),
@@ -50,6 +51,11 @@ namespace ShieldHexLib
         }
 
         public Hex(int q, int r) : this(q, r, -q - r) { }
+
+        public Vector2 Vector()
+        {
+            return new Vector2(Q, R);
+        }
 
         public IEnumerator<int> GetEnumerator()
         {
@@ -78,7 +84,7 @@ namespace ShieldHexLib
         {
             unchecked
             {
-                var hashCode = Q;
+                int hashCode = Q;
                 hashCode = (hashCode * 397) ^ R;
                 hashCode = (hashCode * 397) ^ S;
                 return hashCode;
@@ -111,6 +117,7 @@ namespace ShieldHexLib
         }
 
         // Multiplying by a scalar
+
         public static Hex operator *(Hex a, int k)
         {
             return new Hex(a.Q * k, a.R * k, a.S * k);
@@ -121,29 +128,29 @@ namespace ShieldHexLib
             return new Hex(a.Q * k, a.R * k, a.S * k);
         }
 
-        public int Length()
+        public int DistanceFromOrigin()
         {
             return this.Select(Math.Abs).Max();
         }
 
         public int Distance(Hex hex)
         {
-            return (this - hex).Length();
+            return (this - hex).DistanceFromOrigin();
         }
 
         public static Hex Direction(int dir)
         {
-            var index = dir % Directions.Length;
+            int index = dir % _directions.Length;
             if (index < 0)
             {
-                index += Directions.Length;
+                index += _directions.Length;
             }
-            return Directions[index];
+            return _directions[index];
         }
 
         public Hex Neighbor(int dir)
         {
-            return this + Directions[dir];
+            return this + _directions[dir];
         }
     }
 }

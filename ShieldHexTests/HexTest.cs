@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using NUnit.Framework;
 
 namespace ShieldHexLib.Test
@@ -21,13 +22,20 @@ namespace ShieldHexLib.Test
             }
 
             [Test]
-            public void HasCoordsVector()
+            public void HasCoordsAccessor()
             {
                 var hex = new Hex(1, 2, -3);
                 Assert.That(hex[0], Is.EqualTo(1));
                 Assert.That(hex[1], Is.EqualTo(2));
                 Assert.That(hex[2], Is.EqualTo(-3));
                 Assert.That(() => hex[3], Throws.TypeOf(typeof(IndexOutOfRangeException)));
+            }
+
+            [Test]
+            public void HasCoordsVector()
+            {
+                var hex = new Hex(1, 2, -3);
+                Assert.That(hex.Vector(), Is.EqualTo(new Vector2(1f, 2f)));
             }
 
             [Test]
@@ -98,7 +106,7 @@ namespace ShieldHexLib.Test
                 Assert.That(hex[0] == 1);
                 Assert.That(hex[1] == 2);
                 Assert.That(hex[2] == -3);
-                Assert.That(hex.Dimensions == 3);
+                Assert.That(hex.Length == 3);
             }
         }
 
@@ -156,10 +164,10 @@ namespace ShieldHexLib.Test
             [TestCase(1, 2, -3, ExpectedResult = 3)]
             [TestCase(0, 0, 0, ExpectedResult = 0)]
             [TestCase(-2, 4, -2, ExpectedResult = 4)]
-            public int HasValidLength(int q, int r, int s)
+            public int HasValidDistanceFromOrigin(int q, int r, int s)
             {
                 var hex = new Hex(q, r, s);
-                return hex.Length();
+                return hex.DistanceFromOrigin();
             }
 
             [TestCase(1, 2, -3, 0, 0, 0, ExpectedResult = 3)]
