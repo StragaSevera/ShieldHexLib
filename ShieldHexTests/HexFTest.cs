@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using NUnit.Framework;
 
 namespace ShieldHexLib.Test
@@ -28,14 +29,21 @@ namespace ShieldHexLib.Test
                 Assert.That(hex.R, Is.EqualTo(-2.3f).Within(Tolerance));
                 Assert.That(hex.S, Is.EqualTo(3.7f).Within(Tolerance));
             }
+
+            [Test]
+            public void CanBeInitializedByVector2()
+            {
+                var vector = new Vector2(-1.4f, -2.3f);
+                var hex = new HexF(vector);
+                Assert.That(hex.Q, Is.EqualTo(-1.4f).Within(Tolerance));
+                Assert.That(hex.R, Is.EqualTo(-2.3f).Within(Tolerance));
+                Assert.That(hex.S, Is.EqualTo(3.7f).Within(Tolerance));
+            }
         }
 
         [TestFixture]
         public class WithDoubleInit : HexFTest
         {
-            [SetUp]
-            public void Setup() { }
-
             [Test]
             public void HasCoords()
             {

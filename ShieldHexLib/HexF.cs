@@ -46,6 +46,8 @@ namespace ShieldHexLib
             _coords = new Vector3(q, r, -q - r);
         }
 
+        public HexF(Vector2 vector) : this(vector.X, vector.Y) { }
+
         public HexF(double q, double r, double s) : this((float) q, (float) r, (float) s) { }
 
         public HexF(double q, double r) : this((float) q, (float) r) { }
