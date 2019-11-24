@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -102,8 +102,23 @@ namespace ShieldHexLib
         {
             return !(a == b);
         }
-        
-        public static bool IsValid(float q, float r, float s)
+
+        public static HexF operator +(HexF a, HexF b)
+        {
+            return new HexF(a.Q + b.Q, a.R + b.R, a.S + b.S);
+        }
+
+        public static HexF operator +(HexF a, Hex b)
+        {
+            return new HexF(a.Q + b.Q, a.R + b.R, a.S + b.S);
+        }
+
+        public static HexF operator +(Hex a, HexF b)
+        {
+            return new HexF(a.Q + b.Q, a.R + b.R, a.S + b.S);
+        }
+
+        private static bool IsValid(float q, float r, float s)
         {
             return Math.Abs(q + r + s) < Tolerance;
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -208,15 +208,93 @@ namespace ShieldHexLib.Test
                 Hex direction = Hex.Direction(dir);
                 return direction.ToArray();
             }
-            
+
             [TestCase(0, 0, 0, 0, ExpectedResult = new[] {1, 0, -1})]
-            [TestCase(1, 2, -3, 0, ExpectedResult = new[] {2, 2, -4})]
-            [TestCase(-3, 3, -0, 4, ExpectedResult = new[] {-4, 4, 0})]
+            [TestCase(1, 2, -3, 6, ExpectedResult = new[] {2, 2, -4})]
+            [TestCase(-3, 3, 0, 4, ExpectedResult = new[] {-4, 4, 0})]
             public int[] HasValidNeighbor(int q, int r, int s, int dir)
             {
                 var hex = new Hex(q, r, s);
                 Hex neighbor = hex.Neighbor(dir);
                 return neighbor.ToArray();
+            }
+
+            [Test]
+            public void HasValidNeighbors()
+            {
+                var hex = new Hex(1, 2, -3);
+                var neighbors = hex.Neighbors();
+                var validNeighbors = new[]
+                {
+                    new Hex(2, 2, -4), new Hex(2, 1, -3),
+                    new Hex(1, 1, -2), new Hex(0, 2, -2),
+                    new Hex(0, 3, -3), new Hex(1, 3, -4)
+                };
+                Assert.That(neighbors.Length == 6);
+                Assert.That(neighbors, Is.EqualTo(validNeighbors));
+            }
+
+            [TestCase(0, 0.433f, 0.433f, -0.866f)]
+            [TestCase(1, 0.866f, -0.433f, -0.433f)]
+            [TestCase(5, -0.433f, 0.866f, -0.433f)]
+            [TestCase(6, 0.433f, 0.433f, -0.866f)]
+            [TestCase(-1, -0.433f, 0.866f, -0.433f)]
+            public void HasValidCornerOffset(int dir, float resultQ, float resultR, float resultS)
+            {
+                HexF offset = Hex.CornerOffset(dir);
+                Assert.That(offset.Q, Is.EqualTo(resultQ).Within(0.001f));
+                Assert.That(offset.R, Is.EqualTo(resultR).Within(0.001f));
+                Assert.That(offset.S, Is.EqualTo(resultS).Within(0.001f));
+            }
+
+            [TestCase(0, 0, 0, 0, 0.433f, 0.433f, -0.866f)]
+            [TestCase(1, 2, -3, 6, 1.433f, 2.433f, -3.866f)]
+            [TestCase(-3, 3, 0, 4, -3.866f, 3.433f, 0.433f)]
+            public void HasValidCorner(int q, int r, int s, int dir, float resultQ, float resultR,
+                float resultS)
+            {
+                var hex = new Hex(q, r, s);
+                HexF corner = hex.Corner(dir);
+                Assert.That(corner.Q, Is.EqualTo(resultQ).Within(0.001f));
+                Assert.That(corner.R, Is.EqualTo(resultR).Within(0.001f));
+                Assert.That(corner.S, Is.EqualTo(resultS).Within(0.001f));
+            }
+
+            [Test]
+            public void HasValidCorners()
+            {
+                var hex = new Hex(1, 2, -3);
+                var corners = hex.Corners();
+                var validCorners = new[]
+                {
+                    new HexF(1.433f, 2.433f, -3.866f),
+                    new HexF(1.866f, 1.567f, -3.433f),
+                    new HexF(1.433f, 1.134f, -2.567f),
+                    new HexF(0.567f, 1.567f, -2.134f),
+                    new HexF(0.134f, 2.433f, -2.567f),
+                    new HexF(0.567f, 2.866f, -3.433f)
+                };
+                Assert.That(corners.Length == 6);
+                Assert.That(corners, Is.EqualTo(validCorners).Within(0.001f));
+            }
+
+            [Test]
+            public void HasValidCornersWrapping()
+            {
+                var hex = new Hex(1, 2, -3);
+                var corners = hex.CornersWrapping();
+                var validCorners = new[]
+                {
+                    new HexF(1.433f, 2.433f, -3.866f),
+                    new HexF(1.866f, 1.567f, -3.433f),
+                    new HexF(1.433f, 1.134f, -2.567f),
+                    new HexF(0.567f, 1.567f, -2.134f),
+                    new HexF(0.134f, 2.433f, -2.567f),
+                    new HexF(0.567f, 2.866f, -3.433f),
+                    new HexF(1.433f, 2.433f, -3.866f),
+                };
+                Assert.That(corners.Length == 7);
+                Assert.That(corners, Is.EqualTo(validCorners).Within(0.001f));
             }
         }
     }

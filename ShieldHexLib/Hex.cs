@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +40,16 @@ namespace ShieldHexLib
             new Hex(-1, 1, 0), new Hex(0, 1, -1)
         };
 
+        private static readonly float _rO = (float) Math.Sqrt(3) / 4f;
+        private static readonly float _dO = _rO * 2;
+
+        private static readonly HexF[] _cornerOffsets =
+        {
+            new HexF(_rO, _rO, -_dO), new HexF(_dO, -_rO, -_rO),
+            new HexF(_rO, -_dO, _rO), new HexF(-_rO, -_rO, _dO),
+            new HexF(-_dO, _rO, _rO), new HexF(-_rO, _dO, -_rO)
+        };
+
         public Hex(int q, int r, int s)
         {
             if (!IsValid(q, r, s))
@@ -50,7 +60,9 @@ namespace ShieldHexLib
             S = s;
         }
 
-        public Hex(int q, int r) : this(q, r, -q - r) { }
+        public Hex(int q, int r) : this(q, r, -q - r)
+        {
+        }
 
         // Not a constructor to signify precision loss
         public static Hex FromHexF(HexF hexF)
@@ -128,8 +140,6 @@ namespace ShieldHexLib
         }
 
         // Multiplying by a scalar
-
-
         public static Hex operator *(Hex a, int k)
         {
             return new Hex(a.Q * k, a.R * k, a.S * k);
@@ -157,12 +167,62 @@ namespace ShieldHexLib
             {
                 index += _directions.Length;
             }
+
             return _directions[index];
         }
 
         public Hex Neighbor(int dir)
         {
-            return this + _directions[dir];
+            return this + Direction(dir);
+        }
+
+        public Hex[] Neighbors()
+        {
+            var result = new Hex[6];
+            for (int i = 0; i < 6; i++)
+            {
+                result[i] = Neighbor(i);
+            }
+
+            return result;
+        }
+
+        public static HexF CornerOffset(int dir)
+        {
+            int index = dir % _cornerOffsets.Length;
+            if (index < 0)
+            {
+                index += _directions.Length;
+            }
+
+            return _cornerOffsets[index];
+        }
+
+        public HexF Corner(int dir)
+        {
+            return this + CornerOffset(dir);
+        }
+
+        public HexF[] Corners()
+        {
+            var result = new HexF[6];
+            for (int i = 0; i < 6; i++)
+            {
+                result[i] = Corner(i);
+            }
+
+            return result;
+        }
+
+        public HexF[] CornersWrapping()
+        {
+            var result = new HexF[7];
+            for (int i = 0; i < 7; i++)
+            {
+                result[i] = Corner(i);
+            }
+
+            return result;
         }
     }
 }

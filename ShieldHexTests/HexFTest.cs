@@ -87,18 +87,18 @@ namespace ShieldHexLib.Test
             public void EqualsToAnotherHexWithSameCoords()
             {
                 var hexF = new HexF(1, 2, -3);
-                var anotherHex = new HexF(1, 2, -3);
-                Assert.That(hexF == anotherHex);
-                Assert.That(hexF.Equals(anotherHex));
+                var anotherHexF = new HexF(1, 2, -3);
+                Assert.That(hexF == anotherHexF);
+                Assert.That(hexF.Equals(anotherHexF));
             }
 
             [Test]
             public void DoesNotEqualAnotherHexWithDifferentCoords()
             {
                 var hexF = new HexF(1, 2, -3);
-                var anotherHex = new HexF(1, 1, -2);
-                Assert.That(hexF != anotherHex);
-                Assert.That(!hexF.Equals(anotherHex));
+                var anotherHexF = new HexF(1, 1, -2);
+                Assert.That(hexF != anotherHexF);
+                Assert.That(!hexF.Equals(anotherHexF));
             }
 
             [Test]
@@ -135,6 +135,39 @@ namespace ShieldHexLib.Test
                 Assert.That(hexF[1], Is.EqualTo(2f).Within(Tolerance));
                 Assert.That(hexF[2], Is.EqualTo(-3f).Within(Tolerance));
                 Assert.That(hexF.Length == 3);
+            }
+            
+            
+        }
+
+        [TestFixture]
+        public class WithMathsInit : HexFTest
+        {
+            [Test]
+            public void CanBeAddedToHexF()
+            {
+                var hexF = new HexF(0.5f, 0f, -0.5f);
+                var anotherHexF = new HexF(-1f, -2f, 3f);
+                var result = new HexF(-0.5f, -2f, 2.5f);
+                Assert.That(hexF + anotherHexF == result);
+            }
+
+            [Test]
+            public void CanBeAddedToHex()
+            {
+                var hexF = new HexF(0.5f, 0f, -0.5f);
+                var hex = new Hex(-1, -2, 3);
+                var result = new HexF(-0.5f, -2f, 2.5f);
+                Assert.That(hexF + hex == result);
+            }
+
+            [Test]
+            public void CanBeReverseAddedToHex()
+            {
+                var hex = new Hex(-1, -2, 3);
+                var hexF = new HexF(0.5f, 0f, -0.5f);
+                var result = new HexF(-0.5f, -2f, 2.5f);
+                Assert.That(hex + hexF == result);
             }
         }
     }
