@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -99,6 +99,13 @@ namespace ShieldHexLib.Test
                 };
                 var hex = new Hex(1, 1, -2);
                 Assert.That(dict[hex] == 1);
+            }
+
+            [Test]
+            public void HasStringRepresentation()
+            {
+                var hex = new Hex(1, 2, -3);
+                Assert.That(hex.ToString(), Is.EqualTo("Hex(1, 2, -3)"));
             }
 
             [Test]

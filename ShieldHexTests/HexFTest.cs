@@ -113,6 +113,13 @@ namespace ShieldHexLib.Test
             }
 
             [Test]
+            public void HasStringRepresentation()
+            {
+                var hexF = new HexF(1, 2, -3);
+                Assert.That(hexF.ToString(), Is.EqualTo("Hex(1, 2, -3)"));
+            }
+
+            [Test]
             public void CanBeIterated()
             {
                 var hexF = new HexF(1, 2, -3);

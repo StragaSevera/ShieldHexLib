@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +95,11 @@ namespace ShieldHexLib
                 hashCode = (hashCode * 397) ^ S;
                 return hashCode;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Hex({Q}, {R}, {S})";
         }
 
         public static bool operator ==(Hex a, Hex b)

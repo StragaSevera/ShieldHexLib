@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -86,6 +86,11 @@ namespace ShieldHexLib
         public override int GetHashCode()
         {
             return _coords.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"Hex({Q}, {R}, {S})";
         }
 
         public static bool operator ==(HexF a, HexF b)
