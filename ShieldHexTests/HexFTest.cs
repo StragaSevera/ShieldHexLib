@@ -15,29 +15,39 @@ namespace ShieldHexLib.Test
             [Test]
             public void HasCoords()
             {
-                var hex = new HexF(1.4f, 2.3f, -3.7f);
-                Assert.That(hex.Q, Is.EqualTo(1.4f).Within(Tolerance));
-                Assert.That(hex.R, Is.EqualTo(2.3f).Within(Tolerance));
-                Assert.That(hex.S, Is.EqualTo(-3.7f).Within(Tolerance));
+                var hexF = new HexF(1.4f, 2.3f, -3.7f);
+                Assert.That(hexF.Q, Is.EqualTo(1.4f).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(2.3f).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(-3.7f).Within(Tolerance));
             }
 
             [Test]
             public void CanBeInitializedByTwoCoords()
             {
-                var hex = new HexF(-1.4f, -2.3f);
-                Assert.That(hex.Q, Is.EqualTo(-1.4f).Within(Tolerance));
-                Assert.That(hex.R, Is.EqualTo(-2.3f).Within(Tolerance));
-                Assert.That(hex.S, Is.EqualTo(3.7f).Within(Tolerance));
+                var hexF = new HexF(-1.4f, -2.3f);
+                Assert.That(hexF.Q, Is.EqualTo(-1.4f).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(-2.3f).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(3.7f).Within(Tolerance));
+            }
+
+            [Test]
+            public void CanBeInitializedFromHex()
+            {
+                var hex = new Hex(-1, -2);
+                var hexF = new HexF(hex);
+                Assert.That(hexF.Q, Is.EqualTo(-1f).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(-2f).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(3f).Within(Tolerance));
             }
 
             [Test]
             public void CanBeInitializedByVector2()
             {
                 var vector = new Vector2(-1.4f, -2.3f);
-                var hex = new HexF(vector);
-                Assert.That(hex.Q, Is.EqualTo(-1.4f).Within(Tolerance));
-                Assert.That(hex.R, Is.EqualTo(-2.3f).Within(Tolerance));
-                Assert.That(hex.S, Is.EqualTo(3.7f).Within(Tolerance));
+                var hexF = new HexF(vector);
+                Assert.That(hexF.Q, Is.EqualTo(-1.4f).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(-2.3f).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(3.7f).Within(Tolerance));
             }
         }
 
@@ -47,19 +57,19 @@ namespace ShieldHexLib.Test
             [Test]
             public void HasCoords()
             {
-                var hex = new HexF(1.4, 2.3, -3.7);
-                Assert.That(hex.Q, Is.EqualTo(1.4).Within(Tolerance));
-                Assert.That(hex.R, Is.EqualTo(2.3).Within(Tolerance));
-                Assert.That(hex.S, Is.EqualTo(-3.7).Within(Tolerance));
+                var hexF = new HexF(1.4, 2.3, -3.7);
+                Assert.That(hexF.Q, Is.EqualTo(1.4).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(2.3).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(-3.7).Within(Tolerance));
             }
 
             [Test]
             public void CanBeInitializedByTwoCoords()
             {
-                var hex = new HexF(-1.4, -2.3);
-                Assert.That(hex.Q, Is.EqualTo(-1.4).Within(Tolerance));
-                Assert.That(hex.R, Is.EqualTo(-2.3).Within(Tolerance));
-                Assert.That(hex.S, Is.EqualTo(3.7).Within(Tolerance));
+                var hexF = new HexF(-1.4, -2.3);
+                Assert.That(hexF.Q, Is.EqualTo(-1.4).Within(Tolerance));
+                Assert.That(hexF.R, Is.EqualTo(-2.3).Within(Tolerance));
+                Assert.That(hexF.S, Is.EqualTo(3.7).Within(Tolerance));
             }
         }
 
@@ -76,19 +86,19 @@ namespace ShieldHexLib.Test
             [Test]
             public void EqualsToAnotherHexWithSameCoords()
             {
-                var hex = new HexF(1, 2, -3);
+                var hexF = new HexF(1, 2, -3);
                 var anotherHex = new HexF(1, 2, -3);
-                Assert.That(hex == anotherHex);
-                Assert.That(hex.Equals(anotherHex));
+                Assert.That(hexF == anotherHex);
+                Assert.That(hexF.Equals(anotherHex));
             }
 
             [Test]
             public void DoesNotEqualAnotherHexWithDifferentCoords()
             {
-                var hex = new HexF(1, 2, -3);
+                var hexF = new HexF(1, 2, -3);
                 var anotherHex = new HexF(1, 1, -2);
-                Assert.That(hex != anotherHex);
-                Assert.That(!hex.Equals(anotherHex));
+                Assert.That(hexF != anotherHex);
+                Assert.That(!hexF.Equals(anotherHex));
             }
 
             [Test]
@@ -98,26 +108,26 @@ namespace ShieldHexLib.Test
                 {
                     [new HexF(1, 1, -2)] = 1
                 };
-                var hex = new HexF(1, 1, -2);
-                Assert.That(dict[hex] == 1);
+                var hexF = new HexF(1, 1, -2);
+                Assert.That(dict[hexF] == 1);
             }
 
             [Test]
             public void CanBeIterated()
             {
-                var hex = new HexF(1, 2, -3);
+                var hexF = new HexF(1, 2, -3);
                 var list = new List<float> {1, 2, -3};
-                Assert.That(hex.ToList().SequenceEqual(list));
+                Assert.That(hexF.ToList().SequenceEqual(list));
             }
 
             [Test]
             public void CanBeBracketsAccessed()
             {
-                var hex = new HexF(1, 2, -3);
-                Assert.That(hex[0], Is.EqualTo(1f).Within(Tolerance));
-                Assert.That(hex[1], Is.EqualTo(2f).Within(Tolerance));
-                Assert.That(hex[2], Is.EqualTo(-3f).Within(Tolerance));
-                Assert.That(hex.Dimensions == 3);
+                var hexF = new HexF(1, 2, -3);
+                Assert.That(hexF[0], Is.EqualTo(1f).Within(Tolerance));
+                Assert.That(hexF[1], Is.EqualTo(2f).Within(Tolerance));
+                Assert.That(hexF[2], Is.EqualTo(-3f).Within(Tolerance));
+                Assert.That(hexF.Length == 3);
             }
         }
     }

@@ -48,7 +48,17 @@ namespace ShieldHexLib.Test
             }
 
             [Test]
-            public void CannotBeInvalid()
+            public void CanBeInitializedFromHexF()
+            {
+                var hexF = new HexF(-1.5f, 4.5f);
+                Hex hex = Hex.FromHexF(hexF);
+                Assert.That(hex.Q, Is.EqualTo(-2));
+                Assert.That(hex.R, Is.EqualTo(4));
+                Assert.That(hex.S, Is.EqualTo(-2));
+            }
+
+            [Test]
+            public void CannotBeInitializedFromInvalidCoords()
             {
                 Hex HexFunc() => new Hex(1, 2, 0);
                 Assert.That(HexFunc, Throws.ArgumentException);

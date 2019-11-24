@@ -29,7 +29,7 @@ namespace ShieldHexLib
             return new Layout(Orientation.Flat, size, origin);
         }
 
-        public Vector2 HexToScreen(Hex hex)
+        public Vector2 HexToScreen(IVectorizable hex)
         {
             return Vector2.Transform(hex.Vector(), _forward);
         }

@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace ShieldHexLib
 {
-    public struct HexF : IEnumerable<float>
+    public struct HexF : IEnumerable<float>, IVectorizable
     {
         private readonly Vector3 _coords;
 
@@ -31,7 +31,7 @@ namespace ShieldHexLib
             }
         }
         // ReSharper disable once MemberCanBeMadeStatic.Global
-        public int Dimensions => 3;
+        public int Length => 3;
         public const float Tolerance = 0.00001f;
 
         public HexF(float q, float r, float s)
@@ -48,6 +48,8 @@ namespace ShieldHexLib
 
         public HexF(Vector2 vector) : this(vector.X, vector.Y) { }
 
+        public HexF(Hex hex) : this(hex.Q, hex.R) { }
+
         public HexF(double q, double r, double s) : this((float) q, (float) r, (float) s) { }
 
         public HexF(double q, double r) : this((float) q, (float) r) { }
@@ -62,6 +64,11 @@ namespace ShieldHexLib
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public Vector2 Vector()
+        {
+            return new Vector2(Q, R);
         }
 
         private bool Equals(HexF other)

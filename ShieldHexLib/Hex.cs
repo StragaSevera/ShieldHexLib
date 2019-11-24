@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace ShieldHexLib
 {
-    public struct Hex : IEnumerable<int>
+    public struct Hex : IEnumerable<int>, IVectorizable
     {
         public int Q { get; }
         public int R { get; }
@@ -52,9 +52,10 @@ namespace ShieldHexLib
 
         public Hex(int q, int r) : this(q, r, -q - r) { }
 
-        public Vector2 Vector()
+        // Not a constructor to signify precision loss
+        public static Hex FromHexF(HexF hexF)
         {
-            return new Vector2(Q, R);
+            return new Hex(Convert.ToInt32(hexF.Q), Convert.ToInt32(hexF.R));
         }
 
         public IEnumerator<int> GetEnumerator()
@@ -67,6 +68,11 @@ namespace ShieldHexLib
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public Vector2 Vector()
+        {
+            return new Vector2(Q, R);
         }
 
         public bool Equals(Hex other)
@@ -117,6 +123,7 @@ namespace ShieldHexLib
         }
 
         // Multiplying by a scalar
+
 
         public static Hex operator *(Hex a, int k)
         {
